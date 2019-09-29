@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/meat"
+        android:title="육류"/>
+    <item
+        android:id="@+id/fish"
+        android:title="어패류"/>
+    <item
+        android:id="@+id/fruitVegetable"
+        android:title="과일 및 채소류"/>
+    <item
+        android:id="@+id/milk"
+        android:title="우유 및 유제품"/>
+    <item
+        android:id="@+id/processed"
+        android:title="가공식품"/>
+    <item
+        android:id="@+id/etc"
+        android:title="기타"/>
+</menu>

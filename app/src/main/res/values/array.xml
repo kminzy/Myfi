@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pushAlarmDayList">
+        <item>7일 전</item>
+        <item>5일 전</item>
+        <item>3일 전</item>
+        <item>1일 전</item>
+        <item>당일</item>
+    </string-array>
+
+    <string-array name="pushAlarmDayList_values">
+        <item>7</item>
+        <item>5</item>
+        <item>3</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="cookingToolsList">
+        <item>믹서기</item>
+        <item>에어프라이어</item>
+        <item>전기밥솥</item>
+        <item>전자레인지</item>
+        <item>튀김기</item>
+        <item>토스터</item>
+    </string-array>
+
+    <string-array name="cookingToolsList_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+</resources>
