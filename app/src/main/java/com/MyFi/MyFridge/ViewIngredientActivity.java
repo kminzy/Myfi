@@ -1,6 +1,8 @@
 package com.MyFi.MyFridge;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,18 +22,17 @@ public class ViewIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_ingredient);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        IngredientAdapter adapter = new IngredientAdapter();
+        final IngredientAdapter adapter = new IngredientAdapter();
+        recyclerView.setAdapter(adapter);
 
         // dummy data
         adapter.addItem(new Ingredient("김치", "D-10", "~2019.10.08"));
         adapter.addItem(new Ingredient("돼지고기", "D-5", "~2019.10.03"));
         adapter.addItem(new Ingredient("식빵", "D-7", "~2019.10.04"));
-
-        recyclerView.setAdapter(adapter);
 
         // 전체 버튼
         Button allButton = findViewById(R.id.allButton);
@@ -106,6 +107,9 @@ public class ViewIngredientActivity extends AppCompatActivity {
                             case R.id.freezer:
                                 selectedText.setText("냉동실 재료 조회");
                                 break;
+                            case R.id.inside:
+                                selectedText.setText("실온 재료 조회");
+                                break;
                         }
                         return false;
                     }
@@ -123,5 +127,22 @@ public class ViewIngredientActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 재료 스와이프 삭제
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                adapter.removeItem(position);
+                adapter.notifyItemRemoved(position);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }
