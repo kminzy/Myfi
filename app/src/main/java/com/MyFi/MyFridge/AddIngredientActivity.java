@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class AddIngredientActivity extends AppCompatActivity {
@@ -27,6 +29,17 @@ public class AddIngredientActivity extends AppCompatActivity {
             }
         });
 
+        // 식품유형 선택
+        Spinner categorySpinner = findViewById(R.id.pickCategory);
+        ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this, R.array.ingredientCategory, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
+
+        // 보관장소 선택
+        Spinner placeSpinner = findViewById(R.id.pickPlace);
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.ingredientPlace, android.R.layout.simple_spinner_item);
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        placeSpinner.setAdapter(placeAdapter);
 
         // 완료 버튼
         Button addCompleteButton = findViewById(R.id.addCompleteButton);

@@ -39,6 +39,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         items.add(item);
     }
 
+    public void removeItem(int position) {
+        items.remove(position);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView ingredientName, dDay, expirationDate;
@@ -58,4 +61,5 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             expirationDate.setText(item.getExpirationDate());
         }
     }
+
 }

@@ -33,4 +33,19 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+
+    <string-array name="ingredientCategory">
+        <item>육류</item>
+        <item>어패류</item>
+        <item>과일 및 채소류</item>
+        <item>우유 및 유제품</item>
+        <item>가공식품</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="ingredientPlace">
+        <item>냉장실</item>
+        <item>냉동실</item>
+        <item>실온</item>
+    </string-array>
 </resources>

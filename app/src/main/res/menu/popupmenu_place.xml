@@ -6,4 +6,7 @@
     <item
         android:id="@+id/freezer"
         android:title="냉동실"/>
+    <item
+        android:id="@+id/inside"
+        android:title="실온"/>
 </menu>
