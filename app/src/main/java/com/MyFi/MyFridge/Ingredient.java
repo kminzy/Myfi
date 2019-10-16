@@ -1,5 +1,6 @@
 package com.MyFi.MyFridge;
 
+//TODO:클래스 삭제 필요 IngredientData로 대체
 public class Ingredient {
 
     private String ingredientName;

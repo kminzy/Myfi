@@ -6,33 +6,52 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.MyFi.MyFridge.domain.entitiy.IngredientData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewIngredientActivity extends AppCompatActivity {
+
+    public static Context mContext;
+    final IngredientAdapter adapter = new IngredientAdapter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_ingredient);
 
+        mContext = this;
+
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final IngredientAdapter adapter = new IngredientAdapter();
+
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        /*
+        List<String> names = new ArrayList<String>();
+        names.add(mainActivity.myIngredientList.get(0).getName());
+        names.add(mainActivity.myIngredientList.get(1).getName());
+        names.add(mainActivity.myIngredientList.get(2).getName());
 
         // dummy data
-        adapter.addItem(new Ingredient("김치", "D-10", "~2019.10.08"));
-        adapter.addItem(new Ingredient("돼지고기", "D-5", "~2019.10.03"));
-        adapter.addItem(new Ingredient("식빵", "D-7", "~2019.10.04"));
+        adapter.addItem(new Ingredient(names.get(0), "D-10", "~2019.10.08"));
+        adapter.addItem(new Ingredient(names.get(1), "D-5", "~2019.10.03"));
+        adapter.addItem(new Ingredient(names.get(2), "D-7", "~2019.10.04"));
+        */
 
         // 전체 버튼
         Button allButton = findViewById(R.id.allButton);
@@ -42,6 +61,9 @@ public class ViewIngredientActivity extends AppCompatActivity {
                 // 전체 선택 시 화면의 텍스트뷰에 반영
                 TextView selectedText = findViewById(R.id.selectedText);
                 selectedText.setText("전체 재료 목록");
+                ((MainActivity)MainActivity.mContext).makeIngredientList();
+                recreate();
+
             }
         });
 
@@ -61,9 +83,12 @@ public class ViewIngredientActivity extends AppCompatActivity {
                         // 각 카테고리 선택 시 화면에 반영
                         switch (item.getItemId()) {
                             case R.id.meat:
+                                //TODO: 재료 분류 선택시 이에 해당하는 재료 목록 호출
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(1);
                                 selectedText.setText("육류 목록");
                                 break;
                             case R.id.fish:
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(6);
                                 selectedText.setText("어패류 목록");
                                 break;
                             case R.id.fruitVegetable:
@@ -79,6 +104,8 @@ public class ViewIngredientActivity extends AppCompatActivity {
                                 selectedText.setText("기타 재료 목록");
                                 break;
                         }
+                        //TODO: 새로 정의된 재료리스트 기준으로 뷰 생성을 위한 액티비티 재시작
+                        recreate();
                         return false;
                     }
                 });
@@ -123,10 +150,12 @@ public class ViewIngredientActivity extends AppCompatActivity {
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO:재료 정보를 가져오기 위한 액티비티 연결
                 Intent intent = new Intent(ViewIngredientActivity.this, AddIngredientActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
+
 
         // 재료 스와이프 삭제
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -144,5 +173,20 @@ public class ViewIngredientActivity extends AppCompatActivity {
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    //TODO: 다음 액티비티로 부터 받아온 재료 데이터를 어댑터의 재료 리스트에 추가
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+// MainActivity 에서 요청할 때 보낸 요청 코드 (3000)
+                case 1:
+                    IngredientData result = data.getParcelableExtra("result");
+                    adapter.addItem(result);
+                    adapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 }

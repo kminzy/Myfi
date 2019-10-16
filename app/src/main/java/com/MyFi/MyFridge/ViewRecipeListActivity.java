@@ -6,8 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.MyFi.MyFridge.domain.entitiy.User;
+import com.MyFi.MyFridge.httpConnect.HttpConnection;
+
 
 public class ViewRecipeListActivity extends AppCompatActivity {
+
+    private HttpConnection httpConn = HttpConnection.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,4 +33,9 @@ public class ViewRecipeListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+
+
+
+
 }

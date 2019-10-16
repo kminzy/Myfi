@@ -1,0 +1,103 @@
+package com.MyFi.MyFridge.httpConnect;
+
+
+import com.MyFi.MyFridge.Ingredient;
+import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.User;
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+public class HttpConnection {
+    private final String url = "http://172.20.10.4:8080";
+    private OkHttpClient client;
+    private static HttpConnection instance = new HttpConnection();
+    public static HttpConnection getInstance() {
+        return instance;
+    }
+
+    private HttpConnection(){ this.client = new OkHttpClient(); }
+
+    public void getUserInfo(User user, Callback callback) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/userinfo")
+                .post(RequestBody.create(MediaType.parse("application/json"), json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
+    public void saveIngredient(IngredientData ingredient, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ingredient);
+
+        Request request = new Request.Builder()
+                .url(url+"/saveingredient")
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    public void deleteIngredient(IngredientData ingredient, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ingredient);
+
+        Request request = new Request.Builder()
+                .url(url+"/deleteingredient")
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void makeIngredientList(User user, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/makeingredientlist")
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+    public void makeIngredientListByType(User user,int type, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/makeingredientlistByType/"+type)
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
+
+
+}
