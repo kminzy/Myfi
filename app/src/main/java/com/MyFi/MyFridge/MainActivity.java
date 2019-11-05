@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.MyFi.MyFridge.domain.dto.RecipeDto;
 import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.IngredientName_Code;
 import com.MyFi.MyFridge.domain.entitiy.Recipe;
 import com.MyFi.MyFridge.domain.entitiy.User;
 import com.MyFi.MyFridge.httpConnect.HttpConnection;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public User user = new User();
     public IngredientData ingredient = new IngredientData();
     public RecipeDto recipeDto = new RecipeDto();
+    public IngredientName_Code ingredientName_code = new IngredientName_Code();
     public static List<IngredientData> myIngredientList = new ArrayList<>();
 
     public static Context mContext;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO:다른 액티비티에서 메인 메소드 접근을 위한 CONTEXT 및 유저 재료리스트 초기화 (확인 필요)
         mContext = this;
         makeIngredientList();
+
 
         setContentView(R.layout.activity_main);
         // 냉장고 관리 버튼
@@ -151,6 +156,25 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    public final void makeIngredientListByLocation(final char location) {
+        new Thread() {
+            public void run() {
+                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                httpConn.makeIngredientListByLocation(user,location,ingredientListCallback);
+            }
+        }.start();
+    }
+
+
+    public final void nameToCode(final IngredientName_Code tmpic) {
+        new Thread() {
+            public void run() {
+                httpConn.nameToCode(tmpic,ingredientCodeCallback);
+            }
+        }.start();
+    }
+
+
 
 
     public final Callback userCallback = new Callback() {
@@ -179,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
             final byte[] responseBytes = response.body().bytes();
             ObjectMapper objectMapper = new ObjectMapper();
             ((MainActivity)MainActivity.mContext).ingredient = objectMapper.readValue(responseBytes, IngredientData.class);
-
         }
     };
 
@@ -198,6 +221,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public final Callback ingredientCodeCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+        }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            final byte[] responseBytes = response.body().bytes();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ((MainActivity)MainActivity.mContext).ingredientName_code = objectMapper.readValue(responseBytes,new TypeReference<IngredientName_Code>(){});
+
+        }
+    };
+
 
 
     @SuppressLint("HandlerLeak")
@@ -209,9 +246,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     public List<IngredientData> callIngredientList(){
+        try{
+            Thread.sleep(1000);
+        } catch(Exception e){
+        }
         return myIngredientList;
     }
 
 
+
+
+
+
+
 }
+

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class RecipeDto implements Comparable<RecipeDto> {
     public String name;
+    private String link;
     public List<Integer> needed;
     public List<String> neededString;
     public List<String> having;
@@ -26,6 +27,8 @@ public class RecipeDto implements Comparable<RecipeDto> {
     public void setNumberOfnone(int numberOfnone){
         this.numberOfnone = numberOfnone;
     }
+
+    public  void setLink(String link) { this.link = link; }
 
     public List<Integer> getNeeded() {return this.needed;}
 
