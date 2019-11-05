@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.MyFi.MyFridge.domain.entitiy.IngredientData;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
     //TODO : 메인에 생성된 유저 재료리스트 기준으로 리스트뷰 아이템 리스트 구성
@@ -83,8 +85,28 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         }
 
         public void setItem(IngredientData item) {
+            // 재료의 디데이 계산
+            long dday = 0;
+
+            try {
+                Calendar todayCal = Calendar.getInstance();
+                Calendar expdateCal = Calendar.getInstance();
+                String expdate = item.getExp_date();
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                expdateCal.setTime(simpleDateFormat.parse(expdate));
+
+                long startDate = todayCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                long endDate = expdateCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                dday = endDate - startDate;
+            }
+
+            catch(ParseException e) {
+                e.printStackTrace();
+            }
+
             ingredientName.setText(item.getName());
-            dDay.setText("7");
+            dDay.setText(String.valueOf(dday));
             expirationDate.setText(item.getExp_date().toString());
         }
     }
