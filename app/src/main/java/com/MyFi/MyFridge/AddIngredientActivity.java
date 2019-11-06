@@ -2,10 +2,16 @@ package com.MyFi.MyFridge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,22 +22,41 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.IngredientName_Code;
+import com.MyFi.MyFridge.httpConnect.HttpConnection;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class AddIngredientActivity extends AppCompatActivity {
     //TODO:저장될 재료 객체
     IngredientData ingredient = new IngredientData();
     // 저장 가능한 재료 목록 (임시)
-    String[] ingredientName = new String[] {
-            "고사리", "고추", "돼지고기", "두릅", "두부", "마늘", "배추", "소고기", "식초", "생선", "양파", "양상추", "양배추"
-    };
+    private static final String[] ingredientName = new AutoCompleteText().getIngredientList();
+    private HttpConnection httpConn = HttpConnection.getInstance();
+    public IngredientName_Code ingredientName_code = new IngredientName_Code();
+    public static Context aContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredient);
+
+        aContext = this;
+        //재료등록일 , 유통기한 초기화
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+        Date today = new Date();
+        ingredient.setAdd_date(dateFormat.format(today));
+        ingredient.setExp_date(dateFormat.format(today));
+
 
         // 재료 이름 입력
         final AutoCompleteTextView nameTextView = (AutoCompleteTextView)findViewById(R.id.autoIngredientSearch);
@@ -48,7 +73,24 @@ public class AddIngredientActivity extends AppCompatActivity {
                 // 선택된 재료 객체에 저장
                 String selectedName = nameAdapter.getItem(position).toString();
                 ingredient.setName(selectedName);
-                Toast.makeText(AddIngredientActivity.this, "ingredient: " + selectedName, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        nameTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                ingredient.setName(editable.toString());
             }
         });
 
@@ -63,7 +105,7 @@ public class AddIngredientActivity extends AppCompatActivity {
                 String date = year + "-" + monthOfYear + "-" + dayOfMonth;
                 //TODO: 재료 유통기한 추가
                 ingredient.setExp_date(date);
-                Toast.makeText(AddIngredientActivity.this, date, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddIngredientActivity.this, date, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -79,7 +121,7 @@ public class AddIngredientActivity extends AppCompatActivity {
                 // 목록의 위치를 식품유형 코드에 저장
                 position += 1;
                 ingredient.setType(position);
-                Toast.makeText(AddIngredientActivity.this, "position: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddIngredientActivity.this, "position: " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -100,7 +142,7 @@ public class AddIngredientActivity extends AppCompatActivity {
                 // 선택한 위치를 문자형으로 변경
                 position += 97;
                 ingredient.setLocation((char)position);
-                Toast.makeText(AddIngredientActivity.this, "location: " + (char)position, Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddIngredientActivity.this, "location: " + (char)position, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -115,23 +157,84 @@ public class AddIngredientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ingredient.setCode(11);
                 ingredient.setUid(1);
+                IngredientName_Code tmpic = new IngredientName_Code();
+                tmpic.setName(ingredient.getName());
 
-                ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(ingredient);
-                ((MainActivity)MainActivity.mContext).ingredient.setUid(1);
-                //TODO: 저장할 재료 정보 서버에 전달
-                ((MainActivity)MainActivity.mContext).saveIngredient();
+                nameToCode(tmpic);
 
-                //TODO: 재료목록 생성을 위한 재료 데이터 이전 액티비티로의 전달
-                Intent intent = new Intent();
-                intent.putExtra("result",ingredient);
-
-                setResult(RESULT_OK,intent);
-                finish(); // 재료 추가 액티비티 종료
 
 
             }
         });
     }
+
+
+
+
+    public final void nameToCode(final IngredientName_Code tmpic) {
+        new Thread() {
+            public void run() {
+                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                httpConn.nameToCode(tmpic,ingredientCodeCallback);
+            }
+        }.start();
+    }
+
+    public void saveIngredient() {
+        new Thread() {
+            public void run() {
+                httpConn.saveIngredient(((MainActivity) MainActivity.mContext).ingredient, ingredientCallback);
+            }
+        }.start();
+    }
+
+
+    public final Callback ingredientCodeCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+        }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            final byte[] responseBytes = response.body().bytes();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ((MainActivity)MainActivity.mContext).ingredientName_code = objectMapper.readValue(responseBytes,new TypeReference<IngredientName_Code>(){});
+            ingredient.setCode(((MainActivity)MainActivity.mContext).ingredientName_code.getCode());
+            ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(ingredient);
+            saveIngredient();
+        }
+    };
+
+    public final Callback ingredientCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            final byte[] responseBytes = response.body().bytes();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ((MainActivity) MainActivity.mContext).ingredient = objectMapper.readValue(responseBytes, IngredientData.class);
+            ((MainActivity)MainActivity.mContext).makeIngredientList();
+            Intent intent = new Intent(AddIngredientActivity.this, ViewIngredientActivity.class);
+            startActivity(intent);
+            finish(); // 재료 추가 액티비티 종료
+
+
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    final Handler handler = new Handler()
+    {
+        public void handleMessage(Message msg)
+        {
+
+        }
+    };
+
+
+
+
 }

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +19,19 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.User;
+import com.MyFi.MyFridge.httpConnect.HttpConnection;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ViewIngredientActivity extends AppCompatActivity {
 
@@ -33,6 +44,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
 
         mContext = this;
 
+
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -41,18 +53,6 @@ public class ViewIngredientActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        /*
-        List<String> names = new ArrayList<String>();
-        names.add(mainActivity.myIngredientList.get(0).getName());
-        names.add(mainActivity.myIngredientList.get(1).getName());
-        names.add(mainActivity.myIngredientList.get(2).getName());
-
-        // dummy data
-        adapter.addItem(new Ingredient(names.get(0), "D-10", "~2019.10.08"));
-        adapter.addItem(new Ingredient(names.get(1), "D-5", "~2019.10.03"));
-        adapter.addItem(new Ingredient(names.get(2), "D-7", "~2019.10.04"));
-        */
-
         // 전체 버튼
         Button allButton = findViewById(R.id.allButton);
         allButton.setOnClickListener(new Button.OnClickListener() {
@@ -60,7 +60,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 전체 선택 시 화면의 텍스트뷰에 반영
                 TextView selectedText = findViewById(R.id.selectedText);
-                selectedText.setText("전체 재료 목록");
+                selectedText.setText("나의 재료 목록");
                 ((MainActivity)MainActivity.mContext).makeIngredientList();
                 recreate();
 
@@ -85,23 +85,27 @@ public class ViewIngredientActivity extends AppCompatActivity {
                             case R.id.meat:
                                 //TODO: 재료 분류 선택시 이에 해당하는 재료 목록 호출
                                 ((MainActivity)MainActivity.mContext).makeIngredientListByType(1);
-                                selectedText.setText("육류 목록");
+                                //selectedText.setText("육류 목록");
                                 break;
                             case R.id.fish:
-                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(6);
-                                selectedText.setText("어패류 목록");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(2);
+                                //selectedText.setText("어패류 목록");
                                 break;
                             case R.id.fruitVegetable:
-                                selectedText.setText("과일 및 채소류 목록");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(3);
+                                //selectedText.setText("과일 및 채소류 목록");
                                 break;
                             case R.id.milk:
-                                selectedText.setText("우유 및 유제품 목록");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(4);
+                                //selectedText.setText("우유 및 유제품 목록");
                                 break;
                             case R.id.processed:
-                                selectedText.setText("가공식품 목록");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(5);
+                                //selectedText.setText("가공식품 목록");
                                 break;
                             case R.id.etc:
-                                selectedText.setText("기타 재료 목록");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByType(6);
+                                //selectedText.setText("기타 재료 목록");
                                 break;
                         }
                         //TODO: 새로 정의된 재료리스트 기준으로 뷰 생성을 위한 액티비티 재시작
@@ -129,15 +133,19 @@ public class ViewIngredientActivity extends AppCompatActivity {
                         // 각 보관장소 선택 시 화면에 반영
                         switch (item.getItemId()) {
                             case R.id.fridge:
-                                selectedText.setText("냉장실 재료 조회");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByLocation(((char)97));
+                                //selectedText.setText("냉장실 재료 조회");
                                 break;
                             case R.id.freezer:
-                                selectedText.setText("냉동실 재료 조회");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByLocation(((char)98));
+                                //selectedText.setText("냉동실 재료 조회");
                                 break;
                             case R.id.inside:
-                                selectedText.setText("실온 재료 조회");
+                                ((MainActivity)MainActivity.mContext).makeIngredientListByLocation(((char)99));
+                                //selectedText.setText("실온 재료 조회");
                                 break;
                         }
+                        recreate();
                         return false;
                     }
                 });
@@ -152,7 +160,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO:재료 정보를 가져오기 위한 액티비티 연결
                 Intent intent = new Intent(ViewIngredientActivity.this, AddIngredientActivity.class);
-                startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
 
@@ -175,18 +183,39 @@ public class ViewIngredientActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    //TODO: 다음 액티비티로 부터 받아온 재료 데이터를 어댑터의 재료 리스트에 추가
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK){
-            switch (requestCode){
-// MainActivity 에서 요청할 때 보낸 요청 코드 (3000)
-                case 1:
-                    IngredientData result = data.getParcelableExtra("result");
-                    adapter.addItem(result);
-                    adapter.notifyDataSetChanged();
-                    break;
-            }
+
+    /*
+    Thread thread1 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ((MainActivity)MainActivity.mContext).saveIngredient();
         }
-    }
+    });
+
+    Thread thread2 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            ((MainActivity)MainActivity.mContext).makeIngredientList();
+        }
+    });
+
+    Thread thread3 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            Message msg = handler.obtainMessage();
+            handler.sendMessage(msg);
+        }
+    });
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            adapter.notifyDataSetChanged();
+            //recreate();
+        }
+    };
+
+
+     */
+
+
 }

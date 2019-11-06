@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
     //TODO : 메인에 생성된 유저 재료리스트 기준으로 리스트뷰 아이템 리스트 구성
+
     List<IngredientData> items = ((MainActivity)MainActivity.mContext).callIngredientList();
 
 
@@ -51,11 +52,24 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     }
 
     public void removeItem(int position) {
+        /*
+        if(items.get(position).getIid()==0)
+        {
+
+            List<IngredientData> tmp = ((MainActivity)MainActivity.mContext).callIngredientList();
+            ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(tmp.get(position));
+        }
+        else
+        {
+            ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(items.get(position));
+        }
+        */
         ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(items.get(position));
         ((MainActivity)MainActivity.mContext).ingredient.setUid(1);
         //TODO: 삭제할 재료 데이터 서버에 전달
         ((MainActivity)MainActivity.mContext).deleteIngredient();
         items.remove(position);
+        //setList();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -100,9 +114,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public void setList() {
         //TODO: 메인액티비티에서 불러온 유저 데이터 리스트로 리스트뷰 대상 구성
         ((MainActivity)MainActivity.mContext).user.setUid(1);
-        ((MainActivity)MainActivity.mContext).makeIngredientList();
-        final MainActivity mainActivity = new MainActivity();
-        this.items = mainActivity.myIngredientList;
+        //((MainActivity)MainActivity.mContext).makeIngredientList();
+        //final MainActivity mainActivity = new MainActivity();
+        //this.items = mainActivity.myIngredientList;
+        this.items = ((MainActivity)MainActivity.mContext).callIngredientList();
     }
 
 }

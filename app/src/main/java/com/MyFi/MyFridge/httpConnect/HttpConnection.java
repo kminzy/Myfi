@@ -1,23 +1,19 @@
 package com.MyFi.MyFridge.httpConnect;
 
 
-import com.MyFi.MyFridge.Ingredient;
 import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.IngredientName_Code;
 import com.MyFi.MyFridge.domain.entitiy.User;
 import com.google.gson.Gson;
-
-import java.util.List;
 
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class HttpConnection {
-    private final String url = "http://172.20.10.4:8080";
+    private final String url = "http://192.168.0.3:8080";
     private OkHttpClient client;
     private static HttpConnection instance = new HttpConnection();
     public static HttpConnection getInstance() {
@@ -96,6 +92,35 @@ public class HttpConnection {
         client.newCall(request).enqueue(callback);
 
     }
+
+    public void makeIngredientListByLocation(User user,char location, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/makeingredientlistByLocation/"+location)
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+    public void nameToCode(IngredientName_Code ingredientName_code, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ingredientName_code);
+
+        Request request = new Request.Builder()
+                .url(url+"/nametocode")
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
 
 
 
