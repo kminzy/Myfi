@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
             //TODO: 연결되는 페이지를 초기설정 페이지로 수정
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, InitialSettingActivity.class);
             startActivity(intent);
             finish();
 
