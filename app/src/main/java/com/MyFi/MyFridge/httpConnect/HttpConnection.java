@@ -16,7 +16,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class HttpConnection {
-    private final String url = "http://192.168.0.3:8080";
+    private final String url = "http://172.31.41.117:8080";
     private OkHttpClient client;
     private static HttpConnection instance = new HttpConnection();
     public static HttpConnection getInstance() {
@@ -153,6 +153,22 @@ public class HttpConnection {
         client.newCall(request).enqueue(callback);
 
     }
+
+    public void  addHatedUser(User user, String recipeName, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/addhateuser/"+recipeName)
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
 
 
 
