@@ -101,6 +101,4 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             expirationDate.setText(item.getExp_date().toString());
         }
     }
-
-
 }
