@@ -161,6 +161,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
                 //TODO:재료 정보를 가져오기 위한 액티비티 연결
                 Intent intent = new Intent(ViewIngredientActivity.this, AddIngredientActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

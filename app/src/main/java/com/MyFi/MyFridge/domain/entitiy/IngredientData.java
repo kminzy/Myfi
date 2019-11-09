@@ -3,12 +3,16 @@ package com.MyFi.MyFridge.domain.entitiy;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import lombok.Data;
 
 @Data
-public class IngredientData implements Parcelable {
+public class IngredientData implements Comparable<IngredientData> {
     private int iid; // Auto Increase
     private int uid;
     private String name;
@@ -29,8 +33,7 @@ public class IngredientData implements Parcelable {
         String exp_date;
     }
 
-    protected IngredientData(int iid, int uid, String name, int code, char location, int type, String add_date, String exp_date)
-    {
+    protected IngredientData(int iid, int uid, String name, int code, char location, int type, String add_date, String exp_date) {
         this.iid = iid;
         this.uid = uid;
         this.name = name;
@@ -40,30 +43,6 @@ public class IngredientData implements Parcelable {
         this.add_date = add_date;
         this.exp_date = exp_date;
     }
-
-    public static final Creator<IngredientData> CREATOR = new Creator<IngredientData>() {
-        @Override
-        public IngredientData createFromParcel(Parcel parcel) {
-            return new IngredientData(parcel);
-        }
-
-        @Override
-        public IngredientData[] newArray(int i) {
-            return new IngredientData[i];
-        }
-    };
-
-    public IngredientData(Parcel parcel) {
-        this.iid = parcel.readInt();
-        this.uid = parcel.readInt();
-        this.name = parcel.readString();
-        this.code = parcel.readInt();
-        this.location = parcel.readString().toCharArray()[0];
-        this.type = parcel.readInt();
-        this.add_date = parcel.readString();
-        this.exp_date = parcel.readString();
-    }
-
 
 
     public void setIngredientData(IngredientData ingredientData) {
@@ -77,23 +56,40 @@ public class IngredientData implements Parcelable {
         this.exp_date = ingredientData.getExp_date();
     }
 
+    public long getDday(){
+        long dday= 0;
 
-    @Override
-    public int describeContents() {
-        return 0;
+        try {
+            Calendar todayCal = Calendar.getInstance();
+            Calendar expdateCal = Calendar.getInstance();
+
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            expdateCal.setTime(simpleDateFormat.parse(exp_date));
+
+            long startDate = todayCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
+            long endDate = expdateCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
+            dday = endDate - startDate;
+        }
+
+        catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return dday;
     }
 
+
+
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(iid);
-        parcel.writeInt(uid);
-        parcel.writeString(name);
-        parcel.writeInt(code);
-        parcel.writeString(location+"");
-        parcel.writeInt(type);
-        parcel.writeString(add_date);
-        parcel.writeString(exp_date);
-
-
+    public int compareTo(IngredientData i) {
+        if (this.getDday() < i.getDday())
+        {
+            return -1;
+        }
+        else if(this.getDday() > i.getDday())
+        {
+            return 1;
+        }
+        return 0;
     }
 }

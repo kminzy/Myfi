@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -157,13 +158,11 @@ public class AddIngredientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ingredient.setUid(1);
+                ingredient.setUid(((MainActivity)MainActivity.mContext).user.getUid());
                 IngredientName_Code tmpic = new IngredientName_Code();
                 tmpic.setName(ingredient.getName());
 
                 nameToCode(tmpic);
-
-
 
             }
         });
@@ -175,7 +174,8 @@ public class AddIngredientActivity extends AppCompatActivity {
     public final void nameToCode(final IngredientName_Code tmpic) {
         new Thread() {
             public void run() {
-                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+                ((MainActivity)MainActivity.mContext).user.setUid(sharedPreferences.getInt("uid",1));
                 httpConn.nameToCode(tmpic,ingredientCodeCallback);
             }
         }.start();

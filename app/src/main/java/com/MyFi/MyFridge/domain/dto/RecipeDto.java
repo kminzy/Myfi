@@ -1,5 +1,9 @@
 package com.MyFi.MyFridge.domain.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDto implements Comparable<RecipeDto> {
@@ -9,6 +13,16 @@ public class RecipeDto implements Comparable<RecipeDto> {
     public List<String> neededString;
     public List<String> having;
     private int numberOfnone;
+
+    public RecipeDto()
+    {
+        String name;
+        String link;
+        List<Integer> needed;
+        List<String> neededString;
+        List<String> having;
+        int numberOfnone;
+    }
 
     public void setName(String name){
         this.name = name;
@@ -36,7 +50,20 @@ public class RecipeDto implements Comparable<RecipeDto> {
         return this.numberOfnone;
     }
 
+    public String getName() { return  this.name;}
 
+    public List<String> getNeededString() { return this.neededString; }
+
+    public String getLink() { return this.link; }
+
+    public List<String> getNone() {
+
+        List<String> result = new ArrayList<>();
+        result.addAll(this.neededString);
+        result.removeAll(this.having);
+
+        return result;
+    }
 
     @Override
     public int compareTo(RecipeDto r) {

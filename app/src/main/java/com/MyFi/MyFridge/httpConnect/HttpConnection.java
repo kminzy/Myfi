@@ -6,6 +6,9 @@ import com.MyFi.MyFridge.domain.entitiy.IngredientName_Code;
 import com.MyFi.MyFridge.domain.entitiy.User;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+import java.util.List;
+
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -28,6 +31,19 @@ public class HttpConnection {
 
         Request request = new Request.Builder()
                 .url(url+"/userinfo")
+                .post(RequestBody.create(MediaType.parse("application/json"), json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+    public void createUser(User user, Callback callback) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/createuser")
                 .post(RequestBody.create(MediaType.parse("application/json"), json))
                 .build();
 
@@ -114,6 +130,23 @@ public class HttpConnection {
 
         Request request = new Request.Builder()
                 .url(url+"/nametocode")
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+    public void  getRecommendedRecipe(User user, int[] tools, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        String tool = Arrays.toString(tools);
+        String tools_ = tool.substring(1,tool.length()-1);
+
+        Request request = new Request.Builder()
+                .url(url+"/getrecommendedrecipelist/"+tools_)
                 .post(RequestBody.create(MediaType.parse("application/json"),json))
                 .build();
 
