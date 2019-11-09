@@ -153,6 +153,22 @@ public class HttpConnection {
 
     }
 
+    public void  addHatedUser(User user, String recipeName, Callback callback) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Request request = new Request.Builder()
+                .url(url+"/addhateuser/"+recipeName)
+                .post(RequestBody.create(MediaType.parse("application/json"),json))
+                .build();
+
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
+
 
 
 

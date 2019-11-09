@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public IngredientData ingredient = new IngredientData();
     public RecipeDto recipeDto = new RecipeDto();
     public IngredientName_Code ingredientName_code = new IngredientName_Code();
+    //public List<RecipeDto> hatedRecipes = new ArrayList<>();
     public static List<IngredientData> myIngredientList = new ArrayList<>();
     public static List<RecipeDto> recommendedRecipes = new ArrayList<>();
 
@@ -62,7 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
         user.setUid(sharedPreferences.getInt("uid",1));
-
+        /*
+        SharedPreferences prefHate = getSharedPreferences("hatedRecipe",MODE_PRIVATE);
+        SharedPreferences.Editor ed = prefHate.edit();
+        Gson gson = new Gson();
+        String hatedReicpeJson = gson.toJson(hatedRecipes,RecipeDto.class);
+        ed.putString("hatedRecipe",hatedReicpeJson);
+        ed.commit();
+        */
         makeIngredientList();
         int[] tools = new int[] {1,2,3};
         //getRecommendedRecipes(tools);
