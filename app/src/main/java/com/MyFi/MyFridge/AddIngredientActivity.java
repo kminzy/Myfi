@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -45,11 +46,14 @@ public class AddIngredientActivity extends AppCompatActivity {
     private HttpConnection httpConn = HttpConnection.getInstance();
     public IngredientName_Code ingredientName_code = new IngredientName_Code();
     public static Context aContext;
+    public CheckBox noExpDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredient);
+
 
         aContext = this;
         //재료등록일 , 유통기한 초기화
@@ -110,6 +114,11 @@ public class AddIngredientActivity extends AppCompatActivity {
             }
         });
 
+        // 유통기한 선택 안 함
+        noExpDate = findViewById(R.id.noExpDateCheck);
+        noExpDate.setChecked(false);
+
+
         // 식품유형 선택
         Spinner categorySpinner = findViewById(R.id.pickCategory);
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this, R.array.ingredientCategory, android.R.layout.simple_spinner_item);
@@ -158,6 +167,11 @@ public class AddIngredientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
+                if(noExpDate.isChecked()) {
+                    ingredient.setExp_date("2999-12-31");
+                }
                 ingredient.setUid(((MainActivity)MainActivity.mContext).user.getUid());
                 IngredientName_Code tmpic = new IngredientName_Code();
                 tmpic.setName(ingredient.getName());

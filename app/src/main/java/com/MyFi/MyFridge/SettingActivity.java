@@ -10,9 +10,13 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SettingActivity extends PreferenceActivity {
+
+    Set<String> mainTool = new HashSet<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
