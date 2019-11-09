@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     //public List<RecipeDto> hatedRecipes = new ArrayList<>();
     public static List<IngredientData> myIngredientList = new ArrayList<>();
     public static List<RecipeDto> recommendedRecipes = new ArrayList<>();
+    public SharedPreferences toolPreference;
+    public SharedPreferences.Editor toolEd;
 
     public static Context mContext;
 
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO:다른 액티비티에서 메인 메소드 접근을 위한 CONTEXT 및 유저 재료리스트 초기화 (확인 필요)
         mContext = this;
+
+        toolPreference = getSharedPreferences("Tools",MODE_PRIVATE);
+        toolEd  = toolPreference.edit();
 
         SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
         user.setUid(sharedPreferences.getInt("uid",1));

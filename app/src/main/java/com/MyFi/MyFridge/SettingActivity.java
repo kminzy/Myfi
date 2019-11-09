@@ -10,13 +10,17 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SettingActivity extends PreferenceActivity {
+
+    public static Set<String> selectedTools = new HashSet<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingFragment()).commit();
+
     }
 
     public static class SettingFragment extends PreferenceFragment {
@@ -55,12 +59,11 @@ public class SettingActivity extends PreferenceActivity {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     tools = PreferenceManager.getDefaultSharedPreferences(cookingTools.getContext());
 
-                    Set<String> selectedTools = tools.getStringSet("cookingTools", null);
-
-                    preference.setSummary(selectedTools + "");
+                    selectedTools = tools.getStringSet("cookingTools", null);
 
                     return true;
                 }
+
 
 
 //            cookingTools.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

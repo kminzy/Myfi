@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +29,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,7 +64,13 @@ public class ViewIngredientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 전체 선택 시 화면의 텍스트뷰에 반영
                 TextView selectedText = findViewById(R.id.selectedText);
-                selectedText.setText("나의 재료 목록");
+
+                //TODO:TEST
+                SharedPreferences tools = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
+                Set<String> test = new HashSet<String>();
+                test.add("TEST");
+
+                selectedText.setText((tools.getStringSet("cookingTools",test)).toString());
                 ((MainActivity)MainActivity.mContext).makeIngredientList();
                 recreate();
 
