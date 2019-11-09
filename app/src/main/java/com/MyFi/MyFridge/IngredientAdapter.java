@@ -1,5 +1,6 @@
 package com.MyFi.MyFridge;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,24 +53,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     }
 
     public void removeItem(int position) {
-        /*
-        if(items.get(position).getIid()==0)
-        {
 
-            List<IngredientData> tmp = ((MainActivity)MainActivity.mContext).callIngredientList();
-            ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(tmp.get(position));
-        }
-        else
-        {
-            ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(items.get(position));
-        }
-        */
         ((MainActivity)MainActivity.mContext).ingredient.setIngredientData(items.get(position));
-        ((MainActivity)MainActivity.mContext).ingredient.setUid(1);
+        ((MainActivity)MainActivity.mContext).ingredient.setUid(((MainActivity)MainActivity.mContext).user.getUid());
         //TODO: 삭제할 재료 데이터 서버에 전달
         ((MainActivity)MainActivity.mContext).deleteIngredient();
         items.remove(position);
-        //setList();
+
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,7 +77,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         public void setItem(IngredientData item) {
             // 재료의 디데이 계산
             long dday = 0;
-
+            /*
             try {
                 Calendar todayCal = Calendar.getInstance();
                 Calendar expdateCal = Calendar.getInstance();
@@ -104,20 +94,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             catch(ParseException e) {
                 e.printStackTrace();
             }
-
+             */
+            dday = item.getDday();
             ingredientName.setText(item.getName());
             dDay.setText(String.valueOf(dday));
             expirationDate.setText(item.getExp_date().toString());
         }
     }
 
-    public void setList() {
-        //TODO: 메인액티비티에서 불러온 유저 데이터 리스트로 리스트뷰 대상 구성
-        ((MainActivity)MainActivity.mContext).user.setUid(1);
-        //((MainActivity)MainActivity.mContext).makeIngredientList();
-        //final MainActivity mainActivity = new MainActivity();
-        //this.items = mainActivity.myIngredientList;
-        this.items = ((MainActivity)MainActivity.mContext).callIngredientList();
-    }
 
 }

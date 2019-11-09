@@ -32,6 +32,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public RecipeDto recipeDto = new RecipeDto();
     public IngredientName_Code ingredientName_code = new IngredientName_Code();
     public static List<IngredientData> myIngredientList = new ArrayList<>();
+    public static List<RecipeDto> recommendedRecipes = new ArrayList<>();
 
     public static Context mContext;
 
@@ -56,8 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO:다른 액티비티에서 메인 메소드 접근을 위한 CONTEXT 및 유저 재료리스트 초기화 (확인 필요)
         mContext = this;
-        makeIngredientList();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+        user.setUid(sharedPreferences.getInt("uid",1));
+
+        makeIngredientList();
+        int[] tools = new int[] {1,2,3};
+        //getRecommendedRecipes(tools);
 
         setContentView(R.layout.activity_main);
         // 냉장고 관리 버튼
@@ -75,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         viewRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ViewRecipeListActivity.class);
-                startActivity(intent);
+                int[] tools = new int[] {1,2,3};
+                getRecommendedRecipes(tools);
             }
         });
 
@@ -141,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
     public void makeIngredientList() {
         new Thread() {
             public void run() {
-                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+                ((MainActivity)MainActivity.mContext).user.setUid(sharedPreferences.getInt("uid",1));
                 httpConn.makeIngredientList(user,ingredientListCallback);
             }
         }.start();
@@ -150,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
     public final void makeIngredientListByType(final int type) {
         new Thread() {
             public void run() {
-                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+                ((MainActivity)MainActivity.mContext).user.setUid(sharedPreferences.getInt("uid",1));
                 httpConn.makeIngredientListByType(user,type,ingredientListCallback);
             }
         }.start();
@@ -159,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
     public final void makeIngredientListByLocation(final char location) {
         new Thread() {
             public void run() {
-                ((MainActivity)MainActivity.mContext).user.setUid(1);
+                SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+                ((MainActivity)MainActivity.mContext).user.setUid(sharedPreferences.getInt("uid",1));
                 httpConn.makeIngredientListByLocation(user,location,ingredientListCallback);
             }
         }.start();
@@ -170,6 +181,16 @@ public class MainActivity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 httpConn.nameToCode(tmpic,ingredientCodeCallback);
+            }
+        }.start();
+    }
+
+    public final void getRecommendedRecipes(final int[] tools) {
+        new Thread() {
+            public void run() {
+                SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
+                ((MainActivity)MainActivity.mContext).user.setUid(sharedPreferences.getInt("uid",1));
+                httpConn.getRecommendedRecipe(user,tools,recommendCallback);
             }
         }.start();
     }
@@ -217,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             final byte[] responseBytes = response.body().bytes();
             ObjectMapper objectMapper = new ObjectMapper();
             ((MainActivity)MainActivity.mContext).myIngredientList = objectMapper.readValue(responseBytes,new TypeReference<List<IngredientData>>(){});
+            Collections.sort(((MainActivity)MainActivity.mContext).myIngredientList);
 
         }
     };
@@ -232,6 +254,21 @@ public class MainActivity extends AppCompatActivity {
             ObjectMapper objectMapper = new ObjectMapper();
             ((MainActivity)MainActivity.mContext).ingredientName_code = objectMapper.readValue(responseBytes,new TypeReference<IngredientName_Code>(){});
 
+        }
+    };
+
+    public final Callback recommendCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+        }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+
+            final byte[] responseBytes = response.body().bytes();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ((MainActivity)MainActivity.mContext).recommendedRecipes = objectMapper.readValue(responseBytes,new TypeReference<List<RecipeDto>>(){});
+            Intent intent = new Intent(MainActivity.this, ViewRecipeListActivity.class);
+            startActivity(intent);
         }
     };
 
@@ -254,6 +291,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return myIngredientList;
     }
+
+
 
 
 

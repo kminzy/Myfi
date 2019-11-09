@@ -10,10 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.MyFi.MyFridge.domain.dto.RecipeDto;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
-    private ArrayList<RecipeList> items = new ArrayList<>();
+    private List<RecipeDto> items = ((MainActivity)MainActivity.mContext).recommendedRecipes;
     private Context context;
 
     @NonNull
@@ -29,7 +32,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
     @Override
     // 뷰홀더 데이터 설정
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RecipeList item = items.get(position);
+        RecipeDto item = items.get(position);
         holder.setItem(item);
     }
 
@@ -39,7 +42,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         return items.size();
     }
 
-    public void addItem(RecipeList item) {
+    public void addItem(RecipeDto item) {
         items.add(item);
     }
 
@@ -58,14 +61,21 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
                 public void onClick(View v) {
                     context = v.getContext();
                     Intent intent = new Intent(context, ViewRecipeActivity.class);
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION)
+                    {
+                        ((MainActivity)MainActivity.mContext).recipeDto = ((MainActivity)MainActivity.mContext).recommendedRecipes.get(pos);
+                    }
+
                     context.startActivity(intent);
                 }
             });
         }
 
         // 데이터에 레시피명 설정
-        public void setItem(RecipeList item) {
-            recipeName.setText(item.getRecipeName());
+        public void setItem(RecipeDto item) {
+            recipeName.setText(item.getName());
         }
     }
 }
