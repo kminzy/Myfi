@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.MyFi.MyFridge.domain.entitiy.IngredientData;
+import com.MyFi.MyFridge.domain.entitiy.Recipe;
+
 public class ViewRecipeActivity extends AppCompatActivity {
 
     @Override
@@ -21,7 +24,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ImageView recipeDetailPic = findViewById(R.id.recipeDetailPic);
         TextView foodNameText = findViewById(R.id.foodNameText);
         TextView recipeIngredient = findViewById(R.id.recipeIngredient);
+        TextView recipeIngredientList = findViewById(R.id.recipeIngredientList);
         TextView recipeTools = findViewById(R.id.recipeTools);
+        TextView recipeToolsList = findViewById(R.id.recipeToolsList);
 
         foodNameText.setText(((MainActivity)MainActivity.mContext).recipeDto.getName());
         recipeIngredient.setText("재료 : "+ ((MainActivity)MainActivity.mContext).recipeDto.getNeededString());

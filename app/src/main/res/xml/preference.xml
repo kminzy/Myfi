@@ -23,8 +23,7 @@
         android:title="조리 도구 설정"
         android:key="cookingTools"
         android:entries="@array/cookingToolsList"
-        android:entryValues="@array/cookingToolsList_values"
-        android:summary="가지고 있는 조리 도구를 선택하세요."/>
+        android:entryValues="@array/cookingToolsList_values"/>
 
     <Preference
         android:title="개발자 정보"

@@ -35,8 +35,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
         android:text="재료 : "
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recipeIngredientList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="260dp"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/recipeIngredient"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -45,8 +55,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:text="조리도구 : "
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/recipeIngredient" />
+
+    <TextView
+        android:id="@+id/recipeToolsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/recipeTools"
         app:layout_constraintTop_toBottomOf="@+id/recipeIngredient" />
 
     <androidx.constraintlayout.widget.Guideline
