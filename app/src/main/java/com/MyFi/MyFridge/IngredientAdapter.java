@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,41 +65,45 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView ingredientName, dDay, expirationDate;
-
+        ImageView location;
         public ViewHolder(View itemView) {
             super(itemView);
 
             ingredientName = itemView.findViewById(R.id.ingredientName);
             dDay = itemView.findViewById(R.id.dDay);
             expirationDate = itemView.findViewById(R.id.expirationDate);
+            location = itemView.findViewById(R.id.placeImageView);
             // 이미지뷰 추가
         }
 
         public void setItem(IngredientData item) {
             // 재료의 디데이 계산
             long dday = 0;
-            /*
-            try {
-                Calendar todayCal = Calendar.getInstance();
-                Calendar expdateCal = Calendar.getInstance();
-                String expdate = item.getExp_date();
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                expdateCal.setTime(simpleDateFormat.parse(expdate));
-
-                long startDate = todayCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
-                long endDate = expdateCal.getTimeInMillis() / (24 * 60 * 60 * 1000);
-                dday = endDate - startDate;
-            }
-
-            catch(ParseException e) {
-                e.printStackTrace();
-            }
-             */
             dday = item.getDday();
+
+            if(dday<=0)
+            {
+                dDay.setText("유통기한 만료");
+            }
+            else if(dday>300000)
+            {
+                dDay.setText("");
+            }
+            else
+            {
+                dDay.setText("D - " + dday);
+            }
+
+            switch (item.getLocation()){
+                case (char)97 : location.setImageResource(R.drawable.settings); break;
+                case (char)98 : location.setImageResource(R.drawable.snowflake); break;
+                case (char)99 : location.setImageResource(R.drawable.ic_launcher_foreground); break;
+            }
+
+
             ingredientName.setText(item.getName());
-            dDay.setText(String.valueOf(dday));
-            expirationDate.setText(item.getExp_date().toString());
+            expirationDate.setText("등록일 : " +item.getAdd_date());
         }
     }
 }
