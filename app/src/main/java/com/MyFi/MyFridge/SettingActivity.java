@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SettingActivity extends PreferenceActivity {
-
+  
     public static Set<String> selectedTools = new HashSet<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
