@@ -1,6 +1,8 @@
 package com.MyFi.MyFridge;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +35,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -51,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
     //public List<RecipeDto> hatedRecipes = new ArrayList<>();
     public static List<IngredientData> myIngredientList = new ArrayList<>();
     public static List<RecipeDto> recommendedRecipes = new ArrayList<>();
-    public SharedPreferences toolPreference;
-    public SharedPreferences.Editor toolEd;
 
     public static Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,22 +68,10 @@ public class MainActivity extends AppCompatActivity {
         //TODO:다른 액티비티에서 메인 메소드 접근을 위한 CONTEXT 및 유저 재료리스트 초기화 (확인 필요)
         mContext = this;
 
-        toolPreference = getSharedPreferences("Tools",MODE_PRIVATE);
-        toolEd  = toolPreference.edit();
-
         SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
         user.setUid(sharedPreferences.getInt("uid",1));
-        /*
-        SharedPreferences prefHate = getSharedPreferences("hatedRecipe",MODE_PRIVATE);
-        SharedPreferences.Editor ed = prefHate.edit();
-        Gson gson = new Gson();
-        String hatedReicpeJson = gson.toJson(hatedRecipes,RecipeDto.class);
-        ed.putString("hatedRecipe",hatedReicpeJson);
-        ed.commit();
-        */
+
         makeIngredientList();
-        int[] tools = new int[] {1,2,3};
-        //getRecommendedRecipes(tools);
 
         setContentView(R.layout.activity_main);
         // 냉장고 관리 버튼
@@ -96,8 +89,12 @@ public class MainActivity extends AppCompatActivity {
         viewRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] tools = new int[] {1,2,3};
-                getRecommendedRecipes(tools);
+
+                SharedPreferences tools = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
+                Set<String> test = new HashSet<String>();
+                test.add("1");
+
+                getRecommendedRecipes((tools.getStringSet("cookingTools",test)).toString());
             }
         });
 
@@ -111,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     long backPressed; // 뒤로가기 버튼 누른 시간
 
@@ -130,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         System.exit(0);
         android.os.Process.killProcess(android.os.Process.myPid());
     }
+
+
 
 
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    public final void getRecommendedRecipes(final int[] tools) {
+    public final void getRecommendedRecipes(final String tools) {
         new Thread() {
             public void run() {
                 SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
@@ -304,12 +304,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return myIngredientList;
     }
-
-
-
-
-
-
 
 
 

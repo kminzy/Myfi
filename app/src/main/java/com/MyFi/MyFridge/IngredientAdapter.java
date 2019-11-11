@@ -1,6 +1,7 @@
 package com.MyFi.MyFridge;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,20 +86,33 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             if(dday<=0)
             {
                 dDay.setText("유통기한 만료");
+                itemView.setBackgroundResource(R.drawable.doneback);
+
             }
             else if(dday>300000)
             {
                 dDay.setText("");
+                itemView.setBackgroundResource(R.drawable.goodback);
             }
             else
             {
                 dDay.setText("D - " + dday);
+                SharedPreferences alram = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
+                int beforeDay = alram.getInt("pushAlarmDay",3);
+                if(dday>beforeDay)
+                {
+                    itemView.setBackgroundResource(R.drawable.goodback);
+                }
+                else {
+                    itemView.setBackgroundResource(R.drawable.soonback);
+                }
+
             }
 
             switch (item.getLocation()){
-                case (char)97 : location.setImageResource(R.drawable.settings); break;
+                case (char)97 : location.setImageResource(R.drawable.minibar); break;
                 case (char)98 : location.setImageResource(R.drawable.snowflake); break;
-                case (char)99 : location.setImageResource(R.drawable.ic_launcher_foreground); break;
+                case (char)99 : location.setImageResource(R.drawable.freezer); break;
             }
 
 

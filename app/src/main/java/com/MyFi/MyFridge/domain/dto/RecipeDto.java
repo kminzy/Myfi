@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDto implements Comparable<RecipeDto> {
+    private int rid;
     public String name;
     private String link;
     public List<Integer> needed;
@@ -43,6 +44,8 @@ public class RecipeDto implements Comparable<RecipeDto> {
     }
 
     public  void setLink(String link) { this.link = link; }
+
+    public int getRid() { return this.rid; }
 
     public List<Integer> getNeeded() {return this.needed;}
 

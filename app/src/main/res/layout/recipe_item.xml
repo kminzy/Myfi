@@ -4,30 +4,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:background="@drawable/goodback">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="230dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp">
+
         <ImageView
             android:id="@+id/recipePic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             app:srcCompat="@mipmap/ic_launcher" />
 
-        <TextView
-            android:id="@+id/recipeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginLeft="25dp"
-            android:text="음 식 명"
-            android:textSize="40sp" />
+            <TextView
+                android:id="@+id/recipeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/recipePic"
+                android:layout_alignLeft="@id/recipePic"
+                android:layout_alignRight="@id/recipePic"
+                android:layout_alignTop="@id/recipePic"
+                android:gravity="center"
+                android:text="음 식 명"
+                android:textSize="40sp" />
+        </RelativeLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

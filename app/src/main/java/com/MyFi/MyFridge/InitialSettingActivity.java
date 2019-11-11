@@ -1,8 +1,10 @@
 package com.MyFi.MyFridge;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -36,6 +38,23 @@ public class InitialSettingActivity extends AppCompatActivity {
     public char location;
     public String exp_date;
     public String add_date;
+    public CheckBox rangeCheck ;
+    public CheckBox airfryerCheck;
+    public CheckBox ovenCheck;
+
+    public CheckBox redPepperPowderCheck;
+    public CheckBox redPepperPasteCheck;
+    public CheckBox soybeanPasteCheck;
+    public CheckBox soySauceCheck;
+    public CheckBox sesameOilCheck;
+    public CheckBox perillaOilCheck;
+    public CheckBox honeyCheck;
+    public CheckBox cornSyrupCheck;
+    public CheckBox oligodangCheck;
+    public CheckBox sugarCheck;
+    public CheckBox saltCheck;
+    public CheckBox pepperCheck;
+
 
     private HttpConnection httpConn = HttpConnection.getInstance();
 
@@ -45,22 +64,22 @@ public class InitialSettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setting);
         context = this;
 
-        final CheckBox rangeCheck = findViewById(R.id.rangeCheck);
-        final CheckBox airfryerCheck = findViewById(R.id.airfryerCheck);
-        final CheckBox ovenCheck = findViewById(R.id.ovenCheck);
+        rangeCheck = findViewById(R.id.rangeCheck);
+        airfryerCheck = findViewById(R.id.airfryerCheck);
+        ovenCheck = findViewById(R.id.ovenCheck);
 
-        final CheckBox redPepperPowderCheck = findViewById(R.id.redPepperPowderCheck);
-        final CheckBox redPepperPasteCheck = findViewById(R.id.redPepperPasteCheck);
-        final CheckBox soybeanPasteCheck = findViewById(R.id.soybeanPasteCheck);
-        final CheckBox soySauceCheck = findViewById(R.id.soySauceCheck);
-        final CheckBox sesameOilCheck = findViewById(R.id.sesameOilCheck);
-        final CheckBox perillaOilCheck = findViewById(R.id.perillaOilCheck);
-        final CheckBox honeyCheck = findViewById(R.id.honeyCheck);
-        final CheckBox cornSyrupCheck = findViewById(R.id.cornSyrupCheck);
-        final CheckBox oligodangCheck = findViewById(R.id.oligodangCheck);
-        final CheckBox sugarCheck = findViewById(R.id.sugarCheck);
-        final CheckBox saltCheck = findViewById(R.id.saltCheck);
-        final CheckBox pepperCheck = findViewById(R.id.pepperCheck);
+        redPepperPowderCheck = findViewById(R.id.redPepperPowderCheck);
+        redPepperPasteCheck = findViewById(R.id.redPepperPasteCheck);
+        soybeanPasteCheck = findViewById(R.id.soybeanPasteCheck);
+        soySauceCheck = findViewById(R.id.soySauceCheck);
+        sesameOilCheck = findViewById(R.id.sesameOilCheck);
+        perillaOilCheck = findViewById(R.id.perillaOilCheck);
+        honeyCheck = findViewById(R.id.honeyCheck);
+        cornSyrupCheck = findViewById(R.id.cornSyrupCheck);
+        oligodangCheck = findViewById(R.id.oligodangCheck);
+        sugarCheck = findViewById(R.id.sugarCheck);
+        saltCheck = findViewById(R.id.saltCheck);
+        pepperCheck = findViewById(R.id.pepperCheck);
 
         SharedPreferences sharedPreferences = getSharedPreferences("uid",MODE_PRIVATE);
 
@@ -88,7 +107,47 @@ public class InitialSettingActivity extends AppCompatActivity {
         initialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SavingTask task = new SavingTask();
+                task.execute();
 
+            }
+        });
+    }
+    public void saveIngredient(final IngredientData ingredient) {
+        new Thread() {
+            public void run() {
+                httpConn.saveIngredient(ingredient, ingredientCallback);
+            }
+        }.start();
+    }
+
+    public final Callback ingredientCallback = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+        }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+        }
+    };
+
+    private class SavingTask extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog asyncDialog = new ProgressDialog(
+                InitialSettingActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("초기정보를 저장 중입니다..");
+
+            // show dialog
+            asyncDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            try {
                 SharedPreferences tools = PreferenceManager.getDefaultSharedPreferences(context);
                 //SharedPreferences tools = getSharedPreferences("cookingTools",MODE_PRIVATE);
                 SharedPreferences.Editor ed = tools.edit();
@@ -293,23 +352,18 @@ public class InitialSettingActivity extends AppCompatActivity {
                 Intent intent = new Intent(InitialSettingActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-    }
-    public void saveIngredient(final IngredientData ingredient) {
-        new Thread() {
-            public void run() {
-                httpConn.saveIngredient(ingredient, ingredientCallback);
-            }
-        }.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            asyncDialog.dismiss();
+            super.onPostExecute(result);
+        }
     }
 
-    public final Callback ingredientCallback = new Callback() {
-        @Override
-        public void onFailure(Call call, IOException e) {
-        }
-        @Override
-        public void onResponse(Call call, Response response) throws IOException {
-        }
-    };
+
 }
