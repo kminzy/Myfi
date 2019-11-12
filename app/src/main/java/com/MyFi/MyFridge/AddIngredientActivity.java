@@ -100,7 +100,7 @@ public class AddIngredientActivity extends AppCompatActivity {
         });
 
         // 유통기한 날짜 선택
-        DatePicker date = findViewById(R.id.datePicker);
+        final DatePicker date = findViewById(R.id.datePicker);
 
         date.init(date.getYear(), date.getMonth(), date.getDayOfMonth(), new DatePicker.OnDateChangedListener() {
             @Override
@@ -117,6 +117,23 @@ public class AddIngredientActivity extends AppCompatActivity {
         // 유통기한 선택 안 함
         noExpDate = findViewById(R.id.noExpDateCheck);
         noExpDate.setChecked(false);
+
+        noExpDate.setOnClickListener(new CheckBox.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : process the click event.
+                if(noExpDate.isChecked())
+                {
+                    date.setEnabled(false);
+                }
+                else
+                {
+                    date.setEnabled(true);
+                }
+
+
+            }
+        }) ;
 
 
         // 식품유형 선택

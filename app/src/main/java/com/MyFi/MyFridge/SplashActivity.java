@@ -3,6 +3,9 @@ package com.MyFi.MyFridge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import com.MyFi.MyFridge.httpConnect.HttpConnection;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,9 +39,12 @@ public class SplashActivity extends AppCompatActivity {
         if(sharedPreferences.getBoolean("isNew",true)) {
             //처음 접속한 사용자
             createUser();
+            new AlarmHATT(getApplicationContext()).Alarm();
             SharedPreferences.Editor ed = sharedPreferences.edit();
             ed.putBoolean("isNew",false);
             ed.commit();
+
+
 
         }
         else {
@@ -48,6 +55,24 @@ public class SplashActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public class AlarmHATT {
+        private Context icontext;
+        public AlarmHATT(Context context) {
+            this.icontext=context;
+        }
+        public void Alarm() {
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(SplashActivity.this, Broadcast.class);
+            PendingIntent sender = PendingIntent.getBroadcast(SplashActivity.this, 0, intent, 0);
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 14, 00, 00);
+            //알람 예약
+            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),24*
+                    60*60*1000, sender);
+        }
     }
 
     public void createUser() {
@@ -99,5 +124,6 @@ public class SplashActivity extends AppCompatActivity {
 
         }
     };
+
 
 }

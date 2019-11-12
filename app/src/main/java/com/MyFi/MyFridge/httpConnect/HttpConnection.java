@@ -15,7 +15,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class HttpConnection {
-    private final String url = "http://172.31.41.117:8080";
+    private final String url = "http://112.168.27.216:8080";
     private OkHttpClient client;
     private static HttpConnection instance = new HttpConnection();
     public static HttpConnection getInstance() {
@@ -136,13 +136,12 @@ public class HttpConnection {
 
     }
 
-    public void  getRecommendedRecipe(User user, int[] tools, Callback callback) {
+    public void  getRecommendedRecipe(User user, String tools, Callback callback) {
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
 
-        String tool = Arrays.toString(tools);
-        String tools_ = tool.substring(1,tool.length()-1);
+        String tools_ = tools.substring(1,tools.length()-1);
 
         Request request = new Request.Builder()
                 .url(url+"/getrecommendedrecipelist/"+tools_)
@@ -153,13 +152,13 @@ public class HttpConnection {
 
     }
 
-    public void  addHatedUser(User user, String recipeName, Callback callback) {
+    public void  addHatedUser(User user, int rid, Callback callback) {
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
 
         Request request = new Request.Builder()
-                .url(url+"/addhateuser/"+recipeName)
+                .url(url+"/addhateuser/"+rid)
                 .post(RequestBody.create(MediaType.parse("application/json"),json))
                 .build();
 

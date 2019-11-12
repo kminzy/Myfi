@@ -63,14 +63,14 @@ public class ViewIngredientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 전체 선택 시 화면의 텍스트뷰에 반영
-                TextView selectedText = findViewById(R.id.selectedText);
+                //TextView selectedText = findViewById(R.id.selectedText);
 
                 //TODO:TEST
                 SharedPreferences tools = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
                 Set<String> test = new HashSet<String>();
                 test.add("TEST");
 
-                selectedText.setText((tools.getStringSet("cookingTools",test)).toString());
+                //selectedText.setText((tools.getStringSet("cookingTools",test)).toString());
                 ((MainActivity)MainActivity.mContext).makeIngredientList();
                 recreate();
 
@@ -88,7 +88,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
                 categoryMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        TextView selectedText = findViewById(R.id.selectedText);
+                        //TextView selectedText = findViewById(R.id.selectedText);
 
                         // 각 카테고리 선택 시 화면에 반영
                         switch (item.getItemId()) {
@@ -138,7 +138,7 @@ public class ViewIngredientActivity extends AppCompatActivity {
                 placeMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        TextView selectedText = findViewById(R.id.selectedText);
+                        //TextView selectedText = findViewById(R.id.selectedText);
 
                         // 각 보관장소 선택 시 화면에 반영
                         switch (item.getItemId()) {

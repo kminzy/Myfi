@@ -2,9 +2,12 @@ package com.MyFi.MyFridge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,11 +51,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView recipeName;
+        ImageView recipeImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             recipeName = itemView.findViewById(R.id.recipeName);
+            recipeImage = itemView.findViewById(R.id.recipePic);
+
             // 이미지뷰 추가
 
             // 아이템 클릭 리스너
@@ -74,8 +80,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         }
 
         // 데이터에 레시피명 설정
-        public void setItem(RecipeDto item) {
+        public void setItem(RecipeDto item)
+        {
             recipeName.setText(item.getName());
-        }
+            recipeName.setTextColor(Color.parseColor("#FFFFFF"));
+            String imgName = "recipe"+item.getRid();
+            int resourceId = ((MainActivity)MainActivity.mContext).getResources().getIdentifier(imgName, "drawable", ((MainActivity)MainActivity.mContext).getPackageName());
+            recipeImage.setImageResource(resourceId);
+            recipeImage.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
     }
+    }
+
 }
