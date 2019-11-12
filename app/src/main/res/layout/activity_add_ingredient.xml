@@ -7,11 +7,15 @@
     android:orientation="vertical"
     tools:context=".AddIngredientActivity">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
         android:orientation="horizontal">
 
@@ -25,7 +29,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <AutoCompleteTextView
             android:id="@+id/autoIngredientSearch"
@@ -36,11 +40,16 @@
             android:privateImeOptions="defaultInputmode=korean" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
         android:orientation="horizontal">
 
@@ -54,7 +63,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,15 +81,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false"
-                android:datePickerMode="spinner"/>
+                android:datePickerMode="spinner" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:orientation="horizontal">
 
@@ -89,12 +102,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="식품유형"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/pickCategory"
@@ -102,11 +115,15 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
         android:orientation="horizontal">
 
@@ -120,7 +137,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <Spinner
             android:id="@+id/pickPlace"
@@ -128,13 +145,21 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/addCompleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
         android:text="완료" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
 
 </LinearLayout>

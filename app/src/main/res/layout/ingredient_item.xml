@@ -5,55 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
         android:visibility="visible">
 
         <TextView
             android:id="@+id/ingredientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_vertical"
             android:text="재료명"
-            android:textSize="30sp"/>
+            android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/dDay"
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@+id/placeImageView"
-            android:layout_toEndOf="@id/ingredientName"
-            android:text="D-1"
-            android:textAlignment="textEnd"
-            android:textSize="20sp" />
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/expirationDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dDay"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@+id/placeImageView"
-            android:layout_toEndOf="@+id/ingredientName"
-            android:text="~2019.09.22"
-            android:textAlignment="textEnd"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/dDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D-1"
+                android:textAlignment="textEnd"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/expirationDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="~2019.09.22"
+                android:textAlignment="textEnd"
+                android:textSize="15sp" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/placeImageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentEnd="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical|end"
             app:srcCompat="@drawable/snowflake" />
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
