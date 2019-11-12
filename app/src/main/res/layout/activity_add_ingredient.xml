@@ -144,28 +144,26 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
             android:checkedButton="@id/radio_cold"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/radio_cold"
-                android:layout_width="100dp"
+                android:layout_width="70dp"
                 android:layout_height="51dp"
-                android:button="@drawable/radio"
+                android:button="@drawable/radio" />
 
-                />
             <RadioButton
                 android:id="@+id/radio_freeze"
-                android:layout_width="100dp"
+                android:layout_width="70dp"
                 android:layout_height="51dp"
-                android:button="@drawable/radio3"
-                />
-
+                android:button="@drawable/radio3" />
 
             <RadioButton
 
                 android:id="@+id/radio_out"
-                android:layout_width="100dp"
+                android:layout_width="70dp"
                 android:layout_height="51dp"
                 android:button="@drawable/radio2"
                 />
