@@ -20,6 +20,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -162,7 +163,7 @@ public class AddIngredientActivity extends AppCompatActivity {
 
             }
         });
-
+        /*
         // 보관장소 선택
         Spinner placeSpinner = findViewById(R.id.pickPlace);
         ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.ingredientPlace, android.R.layout.simple_spinner_item);
@@ -183,12 +184,22 @@ public class AddIngredientActivity extends AppCompatActivity {
 
             }
         });
+        */
+
+        final RadioButton btn_cold = findViewById(R.id.radio_cold);
+        final RadioButton btn_freeze = findViewById(R.id.radio_freeze);
+        final RadioButton btn_out = findViewById(R.id.radio_out);
 
         // 완료 버튼
         Button addCompleteButton = findViewById(R.id.addCompleteButton);
         addCompleteButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(btn_cold.isChecked()){ ingredient.setLocation((char)97); }
+                if(btn_freeze.isChecked()){ ingredient.setLocation((char)98); }
+                if(btn_out.isChecked()){ ingredient.setLocation((char)99); }
+
 
 
 
