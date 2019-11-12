@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".AddIngredientActivity">
@@ -65,7 +66,8 @@
                 android:id="@+id/noExpDateCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="유통기한 선택 안 함" />
+                android:text="유통기한 선택 안 함"
+                />
 
             <DatePicker
                 android:id="@+id/datePicker"
@@ -122,10 +124,35 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <Spinner
-            android:id="@+id/pickPlace"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content" />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:checkedButton="@id/radio_cold"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radio_cold"
+                android:layout_width="100dp"
+                android:layout_height="51dp"
+                android:button="@drawable/radio"
+
+                />
+            <RadioButton
+                android:id="@+id/radio_freeze"
+                android:layout_width="100dp"
+                android:layout_height="51dp"
+                android:button="@drawable/radio3"
+                />
+
+
+            <RadioButton
+
+                android:id="@+id/radio_out"
+                android:layout_width="100dp"
+                android:layout_height="51dp"
+                android:button="@drawable/radio2"
+                />
+        </RadioGroup>
     </LinearLayout>
 
 
@@ -136,5 +163,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:text="완료" />
+
 
 </LinearLayout>
