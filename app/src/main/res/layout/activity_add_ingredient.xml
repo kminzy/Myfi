@@ -22,25 +22,22 @@
 
         <TextView
             android:id="@+id/addIngredientName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
             android:text="재료명"
             android:textSize="20sp"
             />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <AutoCompleteTextView
             android:id="@+id/autoIngredientSearch"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:completionThreshold="1"
             android:hint="재료명을 입력하세요."
             android:privateImeOptions="defaultInputmode=korean" />
-
     </LinearLayout>
 
     <View
@@ -49,7 +46,7 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
@@ -57,31 +54,27 @@
 
         <TextView
             android:id="@+id/addExpirationDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:text="유통기한"
             android:textSize="20sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:orientation="vertical">
 
             <CheckBox
                 android:id="@+id/noExpDateCheck"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="유통기한 선택 안 함"
-                />
+                android:text="유통기한 선택 안 함" />
 
             <DatePicker
                 android:id="@+id/datePicker"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner" />
@@ -91,10 +84,10 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
@@ -102,20 +95,19 @@
 
         <TextView
             android:id="@+id/addCategory"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
             android:text="식품유형"
             android:textSize="20sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <Spinner
             android:id="@+id/pickCategory"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text="유통기한 선택 안 함" />
     </LinearLayout>
 
     <View
@@ -124,7 +116,7 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
@@ -132,44 +124,39 @@
 
         <TextView
             android:id="@+id/addPlace"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:text="보관장소"
             android:textSize="20sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <RadioGroup
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_weight="10"
             android:checkedButton="@id/radio_cold"
+            android:gravity="center"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/radio_cold"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="51dp"
-                android:button="@drawable/radio"
+                android:layout_marginEnd="30dp"
+                android:button="@drawable/radio" />
 
-                />
             <RadioButton
                 android:id="@+id/radio_freeze"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="51dp"
-                android:button="@drawable/radio3"
-                />
-
+                android:layout_marginEnd="30dp"
+                android:button="@drawable/radio3" />
 
             <RadioButton
-
                 android:id="@+id/radio_out"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="51dp"
-                android:button="@drawable/radio2"
-                />
+                android:button="@drawable/radio2" />
         </RadioGroup>
     </LinearLayout>
 
@@ -191,6 +178,4 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="2" />
-
-
 </LinearLayout>
