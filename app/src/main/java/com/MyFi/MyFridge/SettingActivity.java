@@ -31,7 +31,7 @@ public class SettingActivity extends PreferenceActivity {
             // 알림 주기 설정에서 날짜 선택 시 Summary에 적용
             // TODO: 설정값 유지, 현재 설정화면 다시 실행하면 초기화
             final androidx.preference.ListPreference pushAlarmDay = (androidx.preference.ListPreference) findPreference("pushAlarmDay");
-            pushAlarmDay.setSummary("알림 받을 날짜를 선택하세요.");
+            pushAlarmDay.setSummary("유통기한 임박 기준일을 설정합니다.");
             pushAlarmDay.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {

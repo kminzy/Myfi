@@ -32,7 +32,9 @@
                 android:layout_alignTop="@id/recipePic"
                 android:gravity="center"
                 android:text="음 식 명"
-                android:textSize="40sp" />
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"/>
         </RelativeLayout>
     </LinearLayout>
 

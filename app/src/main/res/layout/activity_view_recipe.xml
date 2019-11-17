@@ -45,6 +45,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/vrl1">
         <LinearLayout
+            android:id="@+id/vrl3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
@@ -202,13 +203,21 @@
         </LinearLayout>
 
     </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/vrl3">
         <Button
             android:id="@+id/recipeLinkButton"
             android:layout_width="210dp"
             android:layout_height="70dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="65dp"
             android:text="레시피 보러가기"
             android:textSize="24sp" />
 
@@ -216,9 +225,11 @@
             android:id="@+id/hate_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="25dp"
-            android:background="@drawable/hate" />
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/down"
+            app:layout_constraintTop_toBottomOf="@id/vrl3"/>
+        </LinearLayout>
 
     </LinearLayout>
 
