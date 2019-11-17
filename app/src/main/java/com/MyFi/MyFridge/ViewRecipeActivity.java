@@ -95,7 +95,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         String imgName = "recipe"+((MainActivity)MainActivity.mContext).recipeDto.getRid();
         int resourceId = ((MainActivity)MainActivity.mContext).getResources().getIdentifier(imgName, "drawable", ((MainActivity)MainActivity.mContext).getPackageName());
         recipeImage.setImageResource(resourceId);
-        foodNameText.setText(((MainActivity)MainActivity.mContext).recipeDto.getName());
+        //foodNameText.setText(((MainActivity)MainActivity.mContext).recipeDto.getName());
 
 
         // 레시피 보러가기 버튼

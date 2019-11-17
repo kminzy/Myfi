@@ -2,12 +2,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 배경 -->
     <item
-        android:drawable="@color/cardview_light_background"/>
+        android:drawable="@color/colorPrimaryDark"/>
     <!-- 로고 -->
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_logo"/>
+            android:src="@drawable/myfi_logo"/>
     </item>
 </layer-list>
 

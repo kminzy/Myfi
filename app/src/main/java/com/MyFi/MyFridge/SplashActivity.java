@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("isNew", MODE_PRIVATE);
 
+
         if(sharedPreferences.getBoolean("isNew",true)) {
             //처음 접속한 사용자
             createUser();
