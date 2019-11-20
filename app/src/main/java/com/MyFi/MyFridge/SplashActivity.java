@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("isNew", MODE_PRIVATE);
 
+
         if(sharedPreferences.getBoolean("isNew",true)) {
             //처음 접속한 사용자
             createUser();
@@ -68,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
             PendingIntent sender = PendingIntent.getBroadcast(SplashActivity.this, 0, intent, 0);
             Calendar calendar = Calendar.getInstance();
             //알람시간 calendar에 set해주기
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 14, 00, 00);
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 11, 00, 00);
             //알람 예약
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),24*
                     60*60*1000, sender);

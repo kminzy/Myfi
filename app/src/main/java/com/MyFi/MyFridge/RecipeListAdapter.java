@@ -87,7 +87,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
             String imgName = "recipe"+item.getRid();
             int resourceId = ((MainActivity)MainActivity.mContext).getResources().getIdentifier(imgName, "drawable", ((MainActivity)MainActivity.mContext).getPackageName());
             recipeImage.setImageResource(resourceId);
-            recipeImage.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+            recipeImage.setColorFilter(Color.parseColor("#9D9D9D"), PorterDuff.Mode.MULTIPLY);
     }
     }
 

@@ -21,8 +21,6 @@ public class Broadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        SharedPreferences prefs = context.getSharedPreferences("Alarm", MODE_PRIVATE);
-
 
         NotificationManager mNotificationManager;
 
@@ -57,7 +55,7 @@ public class Broadcast extends BroadcastReceiver {
         }
 
         SharedPreferences alram = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
-        int beforeDay = alram.getInt("pushAlarmDay",3);
+        int beforeDay = Integer.parseInt(alram.getString("pushAlarmDay","3"));
 
         if(alram.getBoolean("pushAlarm",true))
         {

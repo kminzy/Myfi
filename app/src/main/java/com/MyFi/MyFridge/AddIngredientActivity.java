@@ -48,6 +48,7 @@ public class AddIngredientActivity extends AppCompatActivity {
     public IngredientName_Code ingredientName_code = new IngredientName_Code();
     public static Context aContext;
     public CheckBox noExpDate;
+    public Spinner categorySpinner;
 
 
     @Override
@@ -85,6 +86,32 @@ public class AddIngredientActivity extends AppCompatActivity {
                 // 선택된 재료 객체에 저장
                 String selectedName = nameAdapter.getItem(position).toString();
                 ingredient.setName(selectedName);
+                IngredientType ingredientType = new IngredientType();
+
+                if(ingredientType.meat.contains(selectedName))
+                {
+                    categorySpinner.setSelection(0);
+                }
+                else if(ingredientType.fish.contains(selectedName))
+                {
+                    categorySpinner.setSelection(1);
+                }
+                else if(ingredientType.vegetable.contains(selectedName))
+                {
+                    categorySpinner.setSelection(2);
+                }
+                else if(ingredientType.milk.contains(selectedName))
+                {
+                    categorySpinner.setSelection(3);
+                }
+                else if(ingredientType.processed.contains(selectedName))
+                {
+                    categorySpinner.setSelection(4);
+                }
+                else
+                {
+                    categorySpinner.setSelection(5);
+                }
 
             }
         });
@@ -144,7 +171,7 @@ public class AddIngredientActivity extends AppCompatActivity {
 
 
         // 식품유형 선택
-        Spinner categorySpinner = findViewById(R.id.pickCategory);
+        categorySpinner = findViewById(R.id.pickCategory);
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this, R.array.ingredientCategory, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);

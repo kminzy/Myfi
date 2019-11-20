@@ -98,7 +98,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             {
                 dDay.setText("D - " + dday);
                 SharedPreferences alram = PreferenceManager.getDefaultSharedPreferences((MainActivity)MainActivity.mContext);
-                int beforeDay = alram.getInt("pushAlarmDay",3);
+                int beforeDay = Integer.parseInt(alram.getString("pushAlarmDay","3"));
                 if(dday>beforeDay)
                 {
                     itemView.setBackgroundResource(R.drawable.goodback);
@@ -110,9 +110,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             }
 
             switch (item.getLocation()){
-                case (char)97 : location.setImageResource(R.drawable.minibar); break;
+                case (char)97 : location.setImageResource(R.drawable.locate_cold); break;
                 case (char)98 : location.setImageResource(R.drawable.snowflake); break;
-                case (char)99 : location.setImageResource(R.drawable.freezer); break;
+                case (char)99 : location.setImageResource(R.drawable.locate_out); break;
             }
 
 
